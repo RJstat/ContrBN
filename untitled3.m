@@ -1,0 +1,19 @@
+global logic_expr
+tic
+fid=fopen('BooleanFunction.txt'); % ????
+row=0;
+while ~feof(fid) % ?????????
+    [~]=fgets(fid); % ??fgetl
+    row=row+1; % ????
+end
+fclose(fid); 
+
+fid=fopen('BooleanFunction.txt'); % ????
+logic_expr=cell(row,1); i=1;
+while ~feof(fid) % ?????????
+    logic_expr{i,1}=fgets(fid); % ??fgetl
+    i=i+1; % ????
+end
+fclose(fid); 
+toc
+

@@ -1,0 +1,314 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Lcal</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-06-27"><meta name="DC.source" content="Lcal.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">%addpath('C:\Users\CHAO\Google Drive\JIN\stp');</span>
+
+k = 2;       <span class="comment">% Two-valued logic</span>
+MC = lmc(k); <span class="comment">% structure matrix for conjunction</span>
+ME = lme(k); <span class="comment">% structure matrix for equivalance</span>
+MN = lmn(k); <span class="comment">% structure matrix for negation</span>
+MR = lmr(k); <span class="comment">% power-reducing matrix</span>
+MD = lmd(k); <span class="comment">% disjunction</span>
+
+<span class="comment">% The logical expression  for the third line can be written as</span>
+<span class="comment">% logic_expr1= '(!D)&amp;(A)';</span>
+<span class="comment">% logic_expr2= '(!E)&amp;B';</span>
+<span class="comment">% logic_expr3= '(!B)&amp;(D|C)';</span>
+<span class="comment">% where | is disjunction, &amp; is conjunction, and ! is negation</span>
+
+<span class="comment">% convert the logic expresson to its matrix form</span>
+
+tic
+fid=fopen(DataName); <span class="comment">% ????</span>
+row=0;
+<span class="keyword">while</span> ~feof(fid) <span class="comment">% ?????????</span>
+    [~]=fgets(fid); <span class="comment">% ??fgetl</span>
+    row=row+1; <span class="comment">% ????</span>
+<span class="keyword">end</span>
+fclose(fid);
+
+fid=fopen(DataName); <span class="comment">% ????</span>
+logic_expr=cell(row,1); i=1;
+<span class="keyword">while</span> ~feof(fid) <span class="comment">% ?????????</span>
+    logic_expr{i,1}=fgetl(fid); <span class="comment">% ??fgetl</span>
+    i=i+1; <span class="comment">% ????</span>
+<span class="keyword">end</span>
+fclose(fid);
+toc
+matrix_expr=cell(row,1);
+eqn=cell(1,row);
+<span class="keyword">for</span> i=1:row
+matrix_expr{i,1} = lmparser(logic_expr{i,1});
+eqn{1,i}=matrix_expr{i,1};
+<span class="keyword">end</span>
+
+[expr0,vars] = stdform(strjoin(eqn));
+
+<span class="comment">% Calculate the network transition matrix</span>
+L0 = eval(expr0);
+v1=L0.v ;
+TranMatr=zeros(2^row,2^row);
+<span class="comment">%sprintf('%s/Transition Matrix.txt',Output)</span>
+fid=fopen(sprintf(<span class="string">'%s/Transition Matrix.txt'</span>,Output),<span class="string">'w'</span>);
+<span class="keyword">for</span> k=1:2^row;
+    <span class="comment">%key='e_{32}^';</span>
+   <span class="comment">%fprintf(fid,'%s%i-&gt;%s%i\n',key,k,key,v1(1,k));</span>
+
+   TranMatr(v1(1,k),k)=1;
+<span class="keyword">end</span>
+fprintf(fid,<span class="string">'The Transition Matrix is\n'</span>);
+<span class="keyword">for</span> i=1:2^row
+   <span class="keyword">for</span> j=1:2^row
+       fprintf(fid,<span class="string">'%i\t'</span>,TranMatr(i,j));
+   <span class="keyword">end</span>
+   fprintf(fid,<span class="string">'\n'</span>);
+<span class="keyword">end</span>
+save(<span class="string">'TranMatr.mat'</span>,<span class="string">'TranMatr'</span>);
+load(<span class="string">'TranMatr.mat'</span>);
+l=2^row;
+Ids=cell(1,2^row);
+<span class="keyword">for</span> k=1:2^row;
+Ids{1,k}=sprintf(<span class="string">'State e_%i^%i'</span>,l,k);
+<span class="keyword">end</span>
+bg = biograph(TranMatr,Ids);
+view(bg)
+
+fprintf(fid,<span class="string">'The Reachable Integrated Nodes and Their Corresponding States are\n'</span>);
+<span class="comment">% Detection of Controllable or Reachable%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+dir=zeros(2^row+1,1);
+<span class="keyword">for</span> i=1:2^row
+    <span class="keyword">for</span> j=1:2^row
+    dir(1)=i;
+    dir(j+1)=v1(1,dir(j));
+    error=v1(1,dir(j+1))-i;
+    <span class="keyword">if</span> error==0
+        fprintf(fid,<span class="string">'%i\n'</span>,i);
+        <span class="keyword">break</span>;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> error ~=0
+        <span class="keyword">continue</span>;
+    <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">%Making the reference%table%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+fprintf(fid,<span class="string">'The Corresponding Node Table of Each Integrated State \n'</span>);
+T = table;
+IntegratedState=cell(1,2^row);
+Nodes=cell(row,2^row);
+b=zeros(1,row);
+<span class="keyword">for</span> i=1:2^row
+   <span class="keyword">for</span> j=1:row;
+   IntegratedState{1,i}=sprintf(<span class="string">'e_%i^%i'</span>,l,i);
+    a=dec2bin(2^row-i);
+    <span class="keyword">if</span> length(a)&lt;row
+       <span class="keyword">for</span> k=1:(row-length(a))
+        b(k)=0;<span class="keyword">end</span>
+    <span class="keyword">for</span> k=(row-length(a)+1):row
+        b(k)=a(k-row+length(a));<span class="keyword">end</span>
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> length(a)==row
+        b=a;<span class="keyword">end</span>
+    Nodes{j,i}=b(j);
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+T.State=IntegratedState';
+T.Nodes=Nodes';
+fprintf(fid,T);
+fclose(fid);
+</pre><pre class="codeoutput error">Undefined function or variable 'DataName'.
+
+Error in Lcal (line 20)
+fid=fopen(DataName); % ????
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+
+%addpath('C:\Users\CHAO\Google Drive\JIN\stp');
+
+k = 2;       % Two-valued logic
+MC = lmc(k); % structure matrix for conjunction
+ME = lme(k); % structure matrix for equivalance
+MN = lmn(k); % structure matrix for negation
+MR = lmr(k); % power-reducing matrix
+MD = lmd(k); % disjunction
+
+% The logical expression  for the third line can be written as
+% logic_expr1= '(!D)&(A)';
+% logic_expr2= '(!E)&B';
+% logic_expr3= '(!B)&(D|C)';
+% where | is disjunction, & is conjunction, and ! is negation
+
+% convert the logic expresson to its matrix form
+
+tic
+fid=fopen(DataName); % ????
+row=0;
+while ~feof(fid) % ?????????
+    [~]=fgets(fid); % ??fgetl
+    row=row+1; % ????
+end
+fclose(fid); 
+
+fid=fopen(DataName); % ????
+logic_expr=cell(row,1); i=1;
+while ~feof(fid) % ?????????
+    logic_expr{i,1}=fgetl(fid); % ??fgetl
+    i=i+1; % ????
+end
+fclose(fid); 
+toc
+matrix_expr=cell(row,1);
+eqn=cell(1,row);
+for i=1:row
+matrix_expr{i,1} = lmparser(logic_expr{i,1});
+eqn{1,i}=matrix_expr{i,1};
+end
+
+[expr0,vars] = stdform(strjoin(eqn));
+
+% Calculate the network transition matrix
+L0 = eval(expr0);
+v1=L0.v ;
+TranMatr=zeros(2^row,2^row);
+%sprintf('%s/Transition Matrix.txt',Output)
+fid=fopen(sprintf('%s/Transition Matrix.txt',Output),'w');
+for k=1:2^row;
+    %key='e_{32}^';
+   %fprintf(fid,'%s%i->%s%i\n',key,k,key,v1(1,k));
+   
+   TranMatr(v1(1,k),k)=1;
+end
+fprintf(fid,'The Transition Matrix is\n');
+for i=1:2^row
+   for j=1:2^row
+       fprintf(fid,'%i\t',TranMatr(i,j));
+   end
+   fprintf(fid,'\n');
+end
+save('TranMatr.mat','TranMatr');
+load('TranMatr.mat');
+l=2^row;
+Ids=cell(1,2^row);
+for k=1:2^row;
+Ids{1,k}=sprintf('State e_%i^%i',l,k);
+end
+bg = biograph(TranMatr,Ids);
+view(bg)
+
+fprintf(fid,'The Reachable Integrated Nodes and Their Corresponding States are\n');
+% Detection of Controllable or Reachable%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+dir=zeros(2^row+1,1);
+for i=1:2^row
+    for j=1:2^row
+    dir(1)=i;
+    dir(j+1)=v1(1,dir(j));
+    error=v1(1,dir(j+1))-i;
+    if error==0
+        fprintf(fid,'%i\n',i);
+        break;
+    end
+    if error ~=0
+        continue;
+    end
+    end
+end
+
+%Making the reference%table%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+fprintf(fid,'The Corresponding Node Table of Each Integrated State \n');
+T = table;
+IntegratedState=cell(1,2^row);
+Nodes=cell(row,2^row);
+b=zeros(1,row);
+for i=1:2^row
+   for j=1:row;
+   IntegratedState{1,i}=sprintf('e_%i^%i',l,i); 
+    a=dec2bin(2^row-i);
+    if length(a)<row
+       for k=1:(row-length(a))
+        b(k)=0;end
+    for k=(row-length(a)+1):row
+        b(k)=a(k-row+length(a));end
+    end
+    if length(a)==row
+        b=a;end
+    Nodes{j,i}=b(j);
+   end
+end
+T.State=IntegratedState';
+T.Nodes=Nodes';
+fprintf(fid,T);
+fclose(fid);
+
+
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>
